@@ -1,8 +1,20 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Collapse,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 import { useForm } from "react-hook-form";
 import { loginSchema } from "src/schemas/loginSchema";
+import { login } from "src/services/auth.service";
 
 type LoginFormInputs = {
   username: string;
@@ -10,16 +22,37 @@ type LoginFormInputs = {
 };
 
 export function LoginForm() {
+  const router = useRouter();
+  const [errorLogin, setErrorLogin] = React.useState("");
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<LoginFormInputs>({
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormInputs) => {
-    console.log("Login data:", data);
+  const username = watch("username");
+  const password = watch("password");
+
+  React.useEffect(() => {
+    setErrorLogin("");
+  }, [username, password]);
+
+  const onSubmit = async (data: LoginFormInputs) => {
+    try {
+      await login(data);
+      router.push("/carts");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+        const message = error.response?.data || "Unexpected error";
+        setErrorLogin(`Error ${status}: ${message}`);
+      } else {
+        setErrorLogin(`Error: ${error}`);
+      }
+    }
   };
 
   return (
@@ -45,6 +78,9 @@ export function LoginForm() {
             Login
           </Button>
         </Box>
+        <Collapse in={!!errorLogin}>
+          <Alert severity="error">{errorLogin}</Alert>
+        </Collapse>
       </Stack>
     </form>
   );
