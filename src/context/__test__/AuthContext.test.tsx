@@ -1,9 +1,9 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { UserProvider, UserContext } from "../UserContext";
+import { AuthProvider, AuthContext } from "../AuthContext";
 
 const TestComponent = () => {
-  const context = React.useContext(UserContext);
+  const context = React.useContext(AuthContext);
 
   if (!context) return <div>No context</div>;
 
@@ -35,21 +35,21 @@ const TestComponent = () => {
   );
 };
 
-describe("UserProvider", () => {
+describe("AuthProvider", () => {
   it("should provide initial null user", () => {
     render(
-      <UserProvider>
+      <AuthProvider>
         <TestComponent />
-      </UserProvider>
+      </AuthProvider>
     );
     expect(screen.getByTestId("username").textContent).toBe("No user");
   });
 
   it("should set user correctly", () => {
     render(
-      <UserProvider>
+      <AuthProvider>
         <TestComponent />
-      </UserProvider>
+      </AuthProvider>
     );
 
     fireEvent.click(screen.getByTestId("setUserBtn"));
@@ -58,9 +58,9 @@ describe("UserProvider", () => {
 
   it("should clear user correctly", () => {
     render(
-      <UserProvider>
+      <AuthProvider>
         <TestComponent />
-      </UserProvider>
+      </AuthProvider>
     );
 
     fireEvent.click(screen.getByTestId("setUserBtn"));

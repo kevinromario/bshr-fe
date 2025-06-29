@@ -4,7 +4,8 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { UserProvider } from "src/context";
+import { AuthProvider } from "src/context";
+import { AuthGuardWrapper } from "src/components/AuthGuardWrapper";
 
 export default function RootLayout({
   children,
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <UserProvider>{children}</UserProvider>
+        <AuthProvider>
+          <AuthGuardWrapper>{children}</AuthGuardWrapper>
+        </AuthProvider>
       </body>
     </html>
   );
