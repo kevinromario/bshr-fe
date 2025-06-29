@@ -83,6 +83,7 @@ export function LoginForm() {
           helperText={errors.username?.message}
         />
         <TextField
+          type="password"
           label="Password"
           variant="standard"
           {...register("password")}
