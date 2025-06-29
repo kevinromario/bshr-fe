@@ -33,6 +33,7 @@ const config: Config = {
     "!src/**/*.d.ts",
     "!src/**/index.ts",
     "!src/**/constants.ts",
+    "!src/**/types/*.ts",
   ],
 
   // The directory where Jest should output its coverage files
