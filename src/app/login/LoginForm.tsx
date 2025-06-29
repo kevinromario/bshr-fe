@@ -12,10 +12,12 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "src/hooks/useAuth";
+import { useSnackbar } from "src/hooks/useSnackbar";
 import { loginSchema } from "src/schemas/loginSchema";
 import { login } from "src/services/auth.service";
 import { getUserById } from "src/services/user.service";
 import { handleAxiosError } from "src/utils/handleAxiosError";
+import { capitalizeFirstLetter } from "src/utils/string";
 
 type LoginFormInputs = {
   username: string;
@@ -25,6 +27,7 @@ type LoginFormInputs = {
 export function LoginForm() {
   const router = useRouter();
   const { setUser } = useAuth();
+  const { showSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorLogin, setErrorLogin] = React.useState("");
   const {
@@ -55,7 +58,10 @@ export function LoginForm() {
       const decodedToken = JSON.parse(atob(res.token.split(".")[1]));
       const user = await getUserById(decodedToken.sub);
       setUser(user);
-
+      showSnackbar({
+        message: `Welcome Back ${capitalizeFirstLetter(user.name.firstname)}`,
+        severity: "success",
+      });
       router.push("/cart");
     } catch (error: unknown) {
       const message = handleAxiosError(error);
@@ -77,6 +83,7 @@ export function LoginForm() {
           helperText={errors.username?.message}
         />
         <TextField
+          type="password"
           label="Password"
           variant="standard"
           {...register("password")}
