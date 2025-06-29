@@ -4,11 +4,13 @@ import { ReactNode } from "react";
 type CenteredContainerProps = {
   children: ReactNode;
   maxWidth?: ContainerProps["maxWidth"];
+  isCentered?: boolean;
 };
 
 export function CenteredContainer({
   children,
   maxWidth = "xs",
+  isCentered = true,
 }: CenteredContainerProps) {
   return (
     <Box
@@ -16,7 +18,7 @@ export function CenteredContainer({
         height: "100vh",
         width: "100%",
         justifyItems: "center",
-        alignContent: "center",
+        alignContent: isCentered ? "center" : null,
       }}
     >
       <Container
@@ -26,6 +28,7 @@ export function CenteredContainer({
           borderStyle: "solid",
           borderRadius: "7px",
           paddingY: "10px",
+          marginTop: isCentered ? null : "10px",
         }}
       >
         {children}

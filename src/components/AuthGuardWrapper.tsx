@@ -19,6 +19,8 @@ export function AuthGuardWrapper({ children }: { children: React.ReactNode }) {
 
     if (isProtected && !user) {
       router.replace("/login");
+    } else if (pathname === "/login" && user) {
+      router.replace("/cart");
     } else {
       setCanRender(true);
     }
