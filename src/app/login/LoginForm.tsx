@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useUser } from "src/hooks/useUser";
+import { useAuth } from "src/hooks/useAuth";
 import { loginSchema } from "src/schemas/loginSchema";
 import { login } from "src/services/auth.service";
 import { getUserById } from "src/services/user.service";
@@ -24,7 +24,7 @@ type LoginFormInputs = {
 
 export function LoginForm() {
   const router = useRouter();
-  const { setUser } = useUser();
+  const { setUser } = useAuth();
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorLogin, setErrorLogin] = React.useState("");
   const {
@@ -56,7 +56,7 @@ export function LoginForm() {
       const user = await getUserById(decodedToken.sub);
       setUser(user);
 
-      router.push("/carts");
+      router.push("/cart");
     } catch (error: unknown) {
       const message = handleAxiosError(error);
       setErrorLogin(message);

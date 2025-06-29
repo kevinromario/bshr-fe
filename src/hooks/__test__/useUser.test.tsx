@@ -1,8 +1,8 @@
 import { renderHook } from "@testing-library/react";
-import { useUser } from "../useUser";
-import { UserContext } from "src/context/UserContext";
+import { useAuth } from "../useAuth";
+import { AuthContext } from "src/context/AuthContext";
 
-describe("useUser", () => {
+describe("useAuth", () => {
   it("should return context value when used inside provider", () => {
     const mockValue = {
       user: {
@@ -16,24 +16,25 @@ describe("useUser", () => {
       },
       setUser: () => null,
       clearUser: () => null,
+      logout: () => null,
     };
 
     const wrapper = ({ children }: { children: React.ReactNode }) => {
       return (
-        <UserContext.Provider value={mockValue}>
+        <AuthContext.Provider value={mockValue}>
           {children}
-        </UserContext.Provider>
+        </AuthContext.Provider>
       );
     };
 
-    const { result } = renderHook(() => useUser(), { wrapper });
+    const { result } = renderHook(() => useAuth(), { wrapper });
 
     expect(result.current).toEqual(mockValue);
   });
 
   it("should throw error when used outside of provider", () => {
-    expect(() => renderHook(() => useUser())).toThrow(
-      "useUser must be used within a UserProvider"
+    expect(() => renderHook(() => useAuth())).toThrow(
+      "useAuth must be used within a AuthProvider"
     );
   });
 });
