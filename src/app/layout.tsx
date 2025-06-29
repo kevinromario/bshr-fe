@@ -4,7 +4,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { AuthProvider, SnackbarProvider } from "src/context";
+import { AuthProvider, CartProvider, SnackbarProvider } from "src/context";
 import { AuthGuardWrapper } from "src/components/AuthGuardWrapper";
 
 export default function RootLayout({
@@ -16,9 +16,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthProvider>
-          <AuthGuardWrapper>
-            <SnackbarProvider>{children}</SnackbarProvider>
-          </AuthGuardWrapper>
+          <CartProvider>
+            <AuthGuardWrapper>
+              <SnackbarProvider>{children}</SnackbarProvider>
+            </AuthGuardWrapper>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>
