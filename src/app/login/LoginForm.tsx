@@ -8,13 +8,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
-
 import { useForm } from "react-hook-form";
+import { useUser } from "src/hooks/useUser";
 import { loginSchema } from "src/schemas/loginSchema";
 import { login } from "src/services/auth.service";
+import { getUserById } from "src/services/user.service";
+import { handleAxiosError } from "src/utils/handleAxiosError";
 
 type LoginFormInputs = {
   username: string;
@@ -23,6 +24,8 @@ type LoginFormInputs = {
 
 export function LoginForm() {
   const router = useRouter();
+  const { setUser } = useUser();
+  const [isLoading, setIsLoading] = React.useState(false);
   const [errorLogin, setErrorLogin] = React.useState("");
   const {
     register,
@@ -42,16 +45,23 @@ export function LoginForm() {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      await login(data);
+      if (isLoading) {
+        return;
+      }
+
+      setIsLoading(true);
+
+      const res = await login(data);
+      const decodedToken = JSON.parse(atob(res.token.split(".")[1]));
+      const user = await getUserById(decodedToken.sub);
+      setUser(user);
+
       router.push("/carts");
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const status = error.response?.status;
-        const message = error.response?.data || "Unexpected error";
-        setErrorLogin(`Error ${status}: ${message}`);
-      } else {
-        setErrorLogin(`Error: ${error}`);
-      }
+      const message = handleAxiosError(error);
+      setErrorLogin(message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -74,7 +84,7 @@ export function LoginForm() {
           helperText={errors.password?.message}
         />
         <Box sx={{ justifyContent: "center", display: "flex" }}>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" loading={isLoading}>
             Login
           </Button>
         </Box>
