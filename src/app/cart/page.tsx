@@ -5,6 +5,7 @@ import { CenteredContainer } from "src/components/CenteredContainer";
 import { PAGE_SIZE } from "src/context";
 import { useAuth } from "src/hooks/useAuth";
 import { useCart } from "src/hooks/useCart";
+import { useProduct } from "src/hooks/useProduct";
 import { useSnackbar } from "src/hooks/useSnackbar";
 import { getAllCarts } from "src/services/cart.service";
 import { getAllProducts } from "src/services/product.service";
@@ -19,9 +20,14 @@ import { capitalizeFirstLetter } from "src/utils/string";
 export default function Cart() {
   const { user, logout } = useAuth();
   const { showSnackbar } = useSnackbar();
-  const { setCarts, setTotalPages, currentPage, pageSize, carts } = useCart();
+  const { setProducts, clearProducts, products } = useProduct();
+  const { setCarts, setTotalPages, currentPage, pageSize, carts, clearCarts } =
+    useCart();
+
   const handleLogout = () => {
     logout();
+    clearProducts();
+    clearCarts();
     showSnackbar({
       message: `Goodbye ${capitalizeFirstLetter(user?.name.firstname || "")}`,
       severity: "success",
@@ -35,6 +41,8 @@ export default function Cart() {
           getAllCarts(),
           getAllProducts(),
         ]);
+
+        setProducts(products);
 
         const cartsWithProductDetail: CartType[] = carts.map((cart) => {
           const productsWithQuantity = cart.products
@@ -100,6 +108,11 @@ export default function Cart() {
           <li key={cart.id}>Cart ID: {cart.id}</li>
         ))}
       </ul>
+      <ol>
+        {products.map((product) => (
+          <li key={product.id}>product name: {product.title}</li>
+        ))}
+      </ol>
     </CenteredContainer>
   );
 }

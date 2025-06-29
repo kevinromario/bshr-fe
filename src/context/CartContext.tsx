@@ -6,6 +6,7 @@ import { Cart } from "src/types/cart";
 type CartContextType = {
   carts: Cart[];
   setCarts: (carts: Cart[]) => void;
+  clearCarts: () => void;
   currentPage: number;
   setCurrentPage: (page: number) => void;
   totalPages: number;
@@ -24,10 +25,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  const clearCarts = () => {
+    setCarts([]);
+    setCurrentPage(1);
+    setTotalPages(1);
+  };
+
   const value = useMemo(
     () => ({
       carts,
       setCarts,
+      clearCarts,
       currentPage,
       setCurrentPage,
       totalPages,

@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "src/hooks/useAuth";
+import { useCart } from "src/hooks/useCart";
+import { useProduct } from "src/hooks/useProduct";
 import { useSnackbar } from "src/hooks/useSnackbar";
 import { loginSchema } from "src/schemas/loginSchema";
 import { login } from "src/services/auth.service";
@@ -28,6 +30,8 @@ export function LoginForm() {
   const router = useRouter();
   const { setUser } = useAuth();
   const { showSnackbar } = useSnackbar();
+  const { clearCarts } = useCart();
+  const { clearProducts } = useProduct();
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorLogin, setErrorLogin] = React.useState("");
   const {
@@ -57,11 +61,15 @@ export function LoginForm() {
       const res = await login(data);
       const decodedToken = JSON.parse(atob(res.token.split(".")[1]));
       const user = await getUserById(decodedToken.sub);
+      clearProducts();
+      clearCarts();
       setUser(user);
+
       showSnackbar({
         message: `Welcome Back ${capitalizeFirstLetter(user.name.firstname)}`,
         severity: "success",
       });
+
       router.push("/cart");
     } catch (error: unknown) {
       const message = handleAxiosError(error);
