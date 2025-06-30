@@ -17,6 +17,7 @@ describe("useAuth", () => {
       setUser: () => null,
       clearUser: () => null,
       logout: () => null,
+      authStateLoaded: true,
     };
 
     const wrapper = ({ children }: { children: React.ReactNode }) => {
