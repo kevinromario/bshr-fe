@@ -1,4 +1,6 @@
 import {
+  Box,
+  Button,
   Pagination,
   Paper,
   Stack,
@@ -8,8 +10,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CartImagePreview } from "src/components/CartProductImagePreview";
 import { useCart } from "src/hooks/useCart";
 import { useProduct } from "src/hooks/useProduct";
@@ -27,11 +30,14 @@ import { handleAxiosError } from "src/utils/handleAxiosError";
 import { CartDetail } from "./CartDetail";
 
 export function TableCart() {
+  const [findProduct, setFindProduct] = useState("");
   const { showSnackbar } = useSnackbar();
   const { setProducts } = useProduct();
   const {
-    carts,
-    setCarts,
+    originalCarts,
+    setOriginalCarts,
+    filteredCarts,
+    setFilteredCarts,
     setCurrentPage,
     pageSize,
     totalPages,
@@ -52,6 +58,30 @@ export function TableCart() {
     page: number
   ) => {
     setCurrentPage(page);
+  };
+
+  const handleSearch = () => {
+    if (!findProduct) {
+      handleReset();
+      return;
+    }
+
+    const filtered = originalCarts.filter((cart) =>
+      cart.products.some((product) =>
+        product.title.toLowerCase().includes(findProduct.toLowerCase())
+      )
+    );
+
+    setFilteredCarts(filtered);
+    setCurrentPage(1);
+    setTotalPages(Math.ceil(filtered.length / pageSize));
+  };
+
+  const handleReset = () => {
+    setFilteredCarts(originalCarts);
+    setCurrentPage(1);
+    setTotalPages(Math.ceil(originalCarts.length / pageSize));
+    setFindProduct("");
   };
 
   useEffect(() => {
@@ -84,7 +114,8 @@ export function TableCart() {
           };
         });
 
-        setCarts(cartsWithProductDetail);
+        setOriginalCarts(cartsWithProductDetail);
+        setFilteredCarts(cartsWithProductDetail);
         setTotalPages(Math.ceil(cartsWithProductDetail.length / pageSize));
       } catch (error) {
         const message = handleAxiosError(error);
@@ -99,13 +130,24 @@ export function TableCart() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const paginatedCarts = carts.slice(
+  const paginatedCarts = filteredCarts.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
 
   return (
     <>
+      <Box display="flex" gap={2}>
+        <TextField
+          value={findProduct}
+          label="Find Product"
+          variant="outlined"
+          size="small"
+          onChange={(event) => setFindProduct(event.target.value)}
+        />
+        <Button onClick={handleSearch}>Search</Button>
+        <Button onClick={handleReset}>Reset</Button>
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
