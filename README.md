@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Simple E-Commerce Frontend
 
-## Getting Started
+This is the frontend of a simple e-commerce application built with **Next.js**, using fake data from [Fake Store API](https://fakestoreapi.com).
 
-First, run the development server:
+> 💡 Live Demo: [https://bshr-fe.vercel.app/](https://bshr-fe.vercel.app/)
+
+---
+
+## ✨ Tech Stack
+
+- [Next.js](https://nextjs.org/)
+
+- [TypeScript](https://www.typescriptlang.org/)
+
+- [Material UI](https://mui.com/material-ui/getting-started/installation/)
+
+- [Context API](https://react.dev/reference/react/createContext)
+
+- [React Hook Form](https://react-hook-form.com/get-started)
+
+- [Axios](https://axios-http.com/)
+
+---
+
+## 📦 Setup & Development
+
+### 1. Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+git  clone  https://github.com/kevinromario/bshr-fe
+
+cd  bshr-fe
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+npm  install
 
-## Learn More
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Set up environment variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a `.env` file in the root directory:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
 
-## Deploy on Vercel
+NEXT_PUBLIC_API_BE=https://fakestoreapi.com
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 4. Start development server
+
+```bash
+
+npm  run  dev
+
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 📦 Build
+
+```bash
+
+npm run build
+
+```
+
+Output will be in the `dist/` folder.
+
+---
+
+## 🚀 Deployment
+
+This project is deployed on **Vercel**. On push to the main branch, Vercel automatically builds and deploys the project.
+
+Live URL: [https://bshr-fe.vercel.app/](https://bshr-fe.vercel.app/)
+
+---
+
+## 🧪 Testing
+
+### ✅ Run Unit & Integration Tests
+
+```
+
+npm run test
+
+```
