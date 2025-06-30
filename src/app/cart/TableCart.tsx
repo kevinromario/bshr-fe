@@ -1,5 +1,4 @@
 import {
-  Button,
   Pagination,
   Paper,
   Stack,
@@ -25,6 +24,7 @@ import {
 import { getCartTotalPrice, getCartTotalQuantity } from "src/utils/cartUtils";
 import { formatCurrency } from "src/utils/currency";
 import { handleAxiosError } from "src/utils/handleAxiosError";
+import { CartDetail } from "./CartDetail";
 
 export function TableCart() {
   const { showSnackbar } = useSnackbar();
@@ -112,7 +112,7 @@ export function TableCart() {
             <TableRow>
               <TableCell>No.</TableCell>
               <TableCell>Date</TableCell>
-              <TableCell>Total Qty</TableCell>
+              <TableCell>Total Items</TableCell>
               <TableCell>Total Price</TableCell>
               <TableCell>Product</TableCell>
               <TableCell>Action</TableCell>
@@ -134,7 +134,7 @@ export function TableCart() {
                   <TableCell>{formatCurrency(totalPrice)}</TableCell>
                   <TableCell>{renderProducts(row)}</TableCell>
                   <TableCell>
-                    <Button sx={{ textTransform: "none" }}>Detail</Button>
+                    <CartDetail cart={row} />
                   </TableCell>
                 </TableRow>
               );
