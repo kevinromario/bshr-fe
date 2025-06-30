@@ -1,4 +1,5 @@
 import { capitalizeFirstLetter } from "../string";
+import { formatDateOnly } from "../string";
 
 describe("capitalizeFirstLetter", () => {
   it("should capitalize the first letter of a lowercase word", () => {
@@ -23,5 +24,25 @@ describe("capitalizeFirstLetter", () => {
 
   it("should handle non-alphabetic first character", () => {
     expect(capitalizeFirstLetter("1kevin")).toBe("1kevin");
+  });
+});
+
+describe("formatDateOnly", () => {
+  it("should format a Date object correctly", () => {
+    const date = new Date("2023-06-30T00:00:00Z");
+    const formatted = formatDateOnly(date);
+    expect(formatted).toBe("June 30, 2023");
+  });
+
+  it("should format a date string correctly", () => {
+    const date = "2024-01-01";
+    const formatted = formatDateOnly(date);
+    expect(formatted).toBe("January 1, 2024");
+  });
+
+  it("should handle invalid date string", () => {
+    const date = "not-a-date";
+    const formatted = formatDateOnly(date);
+    expect(formatted).toBe("Invalid Date");
   });
 });
