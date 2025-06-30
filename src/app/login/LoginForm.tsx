@@ -84,6 +84,7 @@ export function LoginForm() {
       <Stack spacing={2}>
         <Typography variant="h6">Login</Typography>
         <TextField
+          data-testid="inputUsername"
           label="Username"
           variant="standard"
           {...register("username")}
@@ -91,6 +92,7 @@ export function LoginForm() {
           helperText={errors.username?.message}
         />
         <TextField
+          data-testid="inputPassword"
           type="password"
           label="Password"
           variant="standard"
@@ -99,7 +101,12 @@ export function LoginForm() {
           helperText={errors.password?.message}
         />
         <Box sx={{ justifyContent: "center", display: "flex" }}>
-          <Button variant="contained" type="submit" loading={isLoading}>
+          <Button
+            data-testid="loginBtn"
+            variant="contained"
+            type="submit"
+            loading={isLoading}
+          >
             Login
           </Button>
         </Box>

@@ -11,13 +11,17 @@ export default function Home() {
   return (
     <CenteredContainer>
       <Stack spacing={2}>
-        <Typography variant="h6">E-Commerce</Typography>
-        <Typography variant="subtitle1">
+        <Typography data-testid="title" variant="h6">
+          E-Commerce
+        </Typography>
+        <Typography data-testid="subtitle" variant="subtitle1">
           Welcome to Simple E-Commerce
         </Typography>
         <Box sx={{ justifyContent: "center", display: "flex" }}>
           <Link href="/login">
-            <Button variant="contained">Login</Button>
+            <Button data-testid="loginBtn" variant="contained">
+              Login
+            </Button>
           </Link>
         </Box>
       </Stack>
