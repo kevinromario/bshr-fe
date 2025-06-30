@@ -6,8 +6,8 @@ import { Cart } from "src/types/cart";
 type CartContextType = {
   originalCarts: Cart[];
   filteredCarts: Cart[];
-  setOriginalCarts: (carts: Cart[]) => void;
-  setFilteredCarts: (carts: Cart[]) => void;
+  setOriginalCarts: React.Dispatch<React.SetStateAction<Cart[]>>;
+  setFilteredCarts: React.Dispatch<React.SetStateAction<Cart[]>>;
   clearCarts: () => void;
   currentPage: number;
   setCurrentPage: (page: number) => void;
