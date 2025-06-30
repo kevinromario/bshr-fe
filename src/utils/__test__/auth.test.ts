@@ -27,7 +27,6 @@ describe("parseJwt", () => {
   });
 
   it("should return null for malformed payload", () => {
-    // btoa of invalid JSON
     const token = `header.${btoa("not-json")}.sig`;
     const result = parseJwt(token);
     expect(result).toBeNull();
