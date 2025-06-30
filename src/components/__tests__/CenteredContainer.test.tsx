@@ -33,4 +33,19 @@ describe("CenteredContainer", () => {
     const muiContainer = container.querySelector(".MuiContainer-root");
     expect(muiContainer).toHaveClass("MuiContainer-maxWidthMd");
   });
+
+  it("should apply isCentered = false styles correctly", () => {
+    const { container } = render(
+      <CenteredContainer isCentered={false}>
+        <div>Not Centered</div>
+      </CenteredContainer>
+    );
+
+    const box = container.querySelector("div");
+    const containerEl = container.querySelector(".MuiContainer-root");
+
+    expect(containerEl).toHaveStyle("margin-top: 10px");
+
+    expect(box).not.toHaveStyle("align-content: center");
+  });
 });
