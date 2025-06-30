@@ -28,6 +28,8 @@ import { getCartTotalPrice, getCartTotalQuantity } from "src/utils/cartUtils";
 import { formatCurrency } from "src/utils/currency";
 import { handleAxiosError } from "src/utils/handleAxiosError";
 import { CartDetail } from "./CartDetail";
+import { NewCart } from "./NewCart";
+import { formatDateOnly } from "src/utils/string";
 
 export function TableCart() {
   const [findProduct, setFindProduct] = useState("");
@@ -130,6 +132,14 @@ export function TableCart() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    setFilteredCarts(originalCarts);
+    setCurrentPage(1);
+    setTotalPages(Math.ceil(originalCarts.length / pageSize));
+    setFindProduct("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [originalCarts]);
+
   const paginatedCarts = filteredCarts.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
@@ -137,16 +147,28 @@ export function TableCart() {
 
   return (
     <>
-      <Box display="flex" gap={2}>
-        <TextField
-          value={findProduct}
-          label="Find Product"
-          variant="outlined"
-          size="small"
-          onChange={(event) => setFindProduct(event.target.value)}
+      <Box display="flex" justifyContent="space-between">
+        <Box display="flex" gap={2}>
+          <TextField
+            value={findProduct}
+            label="Find Product"
+            variant="outlined"
+            size="small"
+            onChange={(event) => setFindProduct(event.target.value)}
+          />
+          <Button onClick={handleSearch}>Search</Button>
+          <Button color="error" onClick={handleReset}>
+            Reset
+          </Button>
+        </Box>
+        <NewCart
+          onSuccess={() =>
+            showSnackbar({
+              message: "New cart added successfully.",
+              severity: "success",
+            })
+          }
         />
-        <Button onClick={handleSearch}>Search</Button>
-        <Button onClick={handleReset}>Reset</Button>
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -171,7 +193,7 @@ export function TableCart() {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{row.date}</TableCell>
+                  <TableCell>{formatDateOnly(row.date)}</TableCell>
                   <TableCell>{totalItems}</TableCell>
                   <TableCell>{formatCurrency(totalPrice)}</TableCell>
                   <TableCell>{renderProducts(row)}</TableCell>
