@@ -1,4 +1,4 @@
-# Task Manager Frontend
+# Simple E-Commerce Frontend
 
 This is the frontend of a simple e-commerce application built with **Next.js**, using fake data from [Fake Store API](https://fakestoreapi.com).
 
